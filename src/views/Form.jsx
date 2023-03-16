@@ -11,6 +11,7 @@ import {
   CsCheckboxGroup,
   CsSwitch,
   CsSelectMultiple,
+  CsSelect
 } from "../components/CsForm"
 import validationSchema from './schema/FormSchema'
 
@@ -47,6 +48,12 @@ const Form = () => {
     { value: "Sakura", label: "Sakura" },
   ]
 
+  const powerOptions = [
+    { value: "Fire", label: "Fire" },
+    { value: "Water", label: "Water" },
+    { value: "Thunder", label: "Thunder" },
+  ]
+
   const {
     register,
     handleSubmit,
@@ -64,43 +71,47 @@ const Form = () => {
   return (
     <>
       <div className="tw-p-6">
+        <div className="tw-text-2xl tw-font-bold">
+          Example Form 
+        </div>
+        <br />
         <form onSubmit={handleSubmit(onSubmit)}>
           <CsInput
-            label="First Name"
+            label="Input"
             placeholder="Masukan Nama Depan"
             errors={errors.first_name}
             register={{ ...register("first_name") }}
           ></CsInput>
           <br />
           <CsRadioButton
-            label="Agama"
+            label="Radio Button"
             errors={errors.religion}
             register={{ ...register("religion") }}
             options={religionOptions}
           ></CsRadioButton>
           <br />
           <CsCheckbox
-            label="Security Check"
+            label="Check Box"
             title={"Check Me Please"}
             errors={errors.verify}
             register={{ ...register("verify") }}
           ></CsCheckbox>
           <br />
           <CsCheckboxGroup
-            label="Choose Ninja"
+            label="Check Box Group"
             options={ninjaOptions}
             errors={errors.ninja}
             register={{ ...register("ninja") }}
           ></CsCheckboxGroup>
           <br />
           <CsSwitch
-            label="Turn On Loading"
+            label="Switch"
             errors={errors.loading}
             register={{ ...register("loading") }}
           ></CsSwitch>
           <br />
           <CsSelectMultiple
-            label="Choose ur cities"
+            label="Select Multiple"
             errors={errors.cities}
             control={control}
             name={'cities'}
@@ -108,6 +119,13 @@ const Form = () => {
             value={cities}
             onChange={handleCitiesChange}
           ></CsSelectMultiple>
+          <br />
+          <CsSelect label="Select One"
+            errors={errors.power}
+            control={control}
+            name={'power'}
+            options={powerOptions}
+            ></CsSelect>
           <br />
 
           <Button
