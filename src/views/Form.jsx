@@ -12,7 +12,7 @@ import {
   CsSwitch,
   CsSelectMultiple,
   CsSelect
-} from "../components/CsForm"
+} from "components/CsForm"
 import validationSchema from './schema/FormSchema'
 
 const Form = () => {

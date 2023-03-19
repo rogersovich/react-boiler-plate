@@ -1,7 +1,7 @@
-import SkeletonCard from "../components/Widget/SkeletonCard"
-import SkeletonText from "../components/Widget/SkeletonText"
-import SkeletonTable from "../components/Widget/SkeletonTable"
-import ModalAlert from "../components/Widget/ModalAlert"
+import SkeletonCard from "components/Widget/SkeletonCard"
+import SkeletonText from "components/Widget/SkeletonText"
+import SkeletonTable from "components/Widget/SkeletonTable"
+import ModalAlert from "components/Widget/ModalAlert"
 import { Text, Button } from "@chakra-ui/react"
 import { useState } from "react"
 
