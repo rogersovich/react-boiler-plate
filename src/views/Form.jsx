@@ -70,7 +70,7 @@ const Form = () => {
 
   return (
     <>
-      <div className="tw-p-6">
+      <div >
         <div className="tw-text-2xl tw-font-bold">
           Example Form 
         </div>

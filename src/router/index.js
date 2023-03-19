@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router-dom"
 import Home from "../views/Home"
+import LayoutHome from "../views/layouts/LayoutHome"
 import Kucing from "../views/Kucing"
 import Form from "../views/Form"
+import Widget from "../views/Widget"
 import ErrorPage from "../views/ErrorPage"
 import ProtectedRoute from "./protected-route"
 
@@ -11,6 +13,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     errorElement: <ErrorPage />,
+    element: <LayoutHome/>,
     children: [
       {
         path: "",
@@ -27,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/form",
         element: <Form />,
+      },
+      {
+        path: "/widget",
+        element: <Widget />,
       },
     ],
   },
