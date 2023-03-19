@@ -1,16 +1,26 @@
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   useDisclosure,
-  AlertDialogCloseButton,
 } from "@chakra-ui/react"
-import { useRef, useEffect } from "react"
+import { useEffect } from "react"
 
-const ModalAlert = ({ toggleShow, triggerClose, title, children }) => {
+const ModalDialog = ({
+  toggleShow,
+  triggerClose,
+  title,
+  size = 'md',
+  isCentered = true,
+  closeOnOverlayClick = true,
+  scrollBehavior = 'inside',
+  maxHeight = 500,
+  children,
+}) => {
   const checkChild = (el, type) => {
     if (typeof el.find((child) => child.props.name === type) !== "undefined") {
       const element = el.find((child) => {
@@ -34,13 +44,10 @@ const ModalAlert = ({ toggleShow, triggerClose, title, children }) => {
       return "Title here"
     }
   }
-
+  const footer = checkChild(children, "footer")
   const content = checkChild(children, "content")
 
-  const footer = checkChild(children, "footer")
-
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const cancelRef = useRef()
 
   const handleClose = () => {
     onClose()
@@ -57,27 +64,27 @@ const ModalAlert = ({ toggleShow, triggerClose, title, children }) => {
 
   return (
     <>
-      <AlertDialog
-        motionPreset="slideInBottom"
-        leastDestructiveRef={cancelRef}
-        onClose={handleClose}
+      <Modal
         isOpen={isOpen}
-        isCentered
+        onClose={handleClose}
+        size={size}
+        isCentered={isCentered}
+        closeOnOverlayClick={closeOnOverlayClick}
+        scrollBehavior={scrollBehavior}
       >
-        <AlertDialogOverlay />
-
-        <AlertDialogContent>
-          <AlertDialogHeader>{headerComp()}</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody className={`${!footer && "tw-pb-5"}`}>
+        <ModalOverlay />
+        <ModalContent maxH={maxHeight}>
+          <ModalHeader>{headerComp()}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody className={`${!footer && "tw-pb-5"}`}>
             {content && content}
-          </AlertDialogBody>
+          </ModalBody>
 
-          {footer && <AlertDialogFooter>{footer}</AlertDialogFooter>}
-        </AlertDialogContent>
-      </AlertDialog>
+          {footer && <ModalFooter>{footer}</ModalFooter>}
+        </ModalContent>
+      </Modal>
     </>
   )
 }
 
-export default ModalAlert
+export default ModalDialog
