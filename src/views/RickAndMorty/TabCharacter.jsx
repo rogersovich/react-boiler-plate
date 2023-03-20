@@ -7,7 +7,13 @@ const TabCharacter = ({
   characters,
   characterParams,
   onChangePagination,
+  onShowDetail
 }) => {
+
+  const showDetail = (ID) => {
+    onShowDetail(ID)
+  }
+
   return (
     <>
       <div className="grid-12 tw-gap-4">
@@ -20,6 +26,8 @@ const TabCharacter = ({
                     variant="outline"
                     backgroundColor={"gray.800"}
                     color={"white"}
+                    onClick={() => showDetail(character.id)}
+                    className="tw-cursor-pointer"
                   >
                     <CardBody>
                       <div>
