@@ -1,5 +1,6 @@
 import Pagination from "utils/Pagination"
 import { Card, CardBody, Text } from "@chakra-ui/react"
+import SkeletonParagraph from "components/Widget/SkeletonParagraph"
 
 const TabLocation = ({
   isLoading,
@@ -40,12 +41,22 @@ const TabLocation = ({
                 currentPage={locationParams.page}
                 totalCount={locationParams.count}
                 pageSize={20}
-                onPageChange={(page) => onChangePagination(page, 'location')}
+                onPageChange={(page) => onChangePagination(page, "location")}
               />
             </div>
           </div>
-        ) : (
+        ) : !isLoading && locations.length === 0 ? (
           <div className="tw-col-span-12">Tidak ada data</div>
+        ) : (
+          <div className="tw-col-span-12">
+            <div className="grid-12 tw-gap-4">
+              {[...Array(16)].map((x, i) => (
+                <div key={i} className="tw-col-span-3">
+                  <SkeletonParagraph />
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </>

@@ -1,5 +1,6 @@
 import Pagination from "utils/Pagination"
 import { Card, CardBody, Text, Image, Box } from "@chakra-ui/react"
+import SkeletonImage from "components/Widget/SkeletonImage"
 
 const TabCharacter = ({
   isLoading,
@@ -61,12 +62,22 @@ const TabCharacter = ({
                 currentPage={characterParams.page}
                 totalCount={characterParams.count}
                 pageSize={20}
-                onPageChange={(page) => onChangePagination(page, 'character')}
+                onPageChange={(page) => onChangePagination(page, "character")}
               />
             </div>
           </div>
-        ) : (
+        ) : !isLoading && characters.length === 0 ? (
           <div className="tw-col-span-12">Tidak ada data</div>
+        ) : (
+          <div className="tw-col-span-12">
+            <div className="grid-12 tw-gap-4">
+              {[...Array(8)].map((x, i) => (
+                <div key={i} className="tw-col-span-3">
+                  <SkeletonImage />
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </>

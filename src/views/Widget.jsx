@@ -1,6 +1,7 @@
 import SkeletonCard from "components/Widget/SkeletonCard"
-import SkeletonText from "components/Widget/SkeletonText"
+import SkeletonText from "components/Widget/SkeletonParagraph"
 import SkeletonTable from "components/Widget/SkeletonTable"
+import SkeletonImage from "components/Widget/SkeletonImage"
 import ModalAlert from "components/Widget/ModalAlert"
 import ModalDialog from "components/Widget/ModalDialog"
 import { Text, Button } from "@chakra-ui/react"
@@ -17,12 +18,6 @@ const Widget = () => {
   const toggleModal2 = useCallback(() => {
     setModalDialog2(!modalDialog2)
   }, [modalDialog2])
-
-  const [modalDialog3, setModalDialog3] = useState(false)
-  const toggleModal3 = useCallback(() => {
-    setModalDialog3(!modalDialog3)
-  }, [modalDialog3])
-
   return (
     <>
       <div className="grid-12 tw-gap-4">
@@ -31,6 +26,7 @@ const Widget = () => {
             <Text fontSize="lg" as="b">
               Skelton Card
             </Text>
+            <p></p>
             <SkeletonCard />
           </div>
         </div>
@@ -39,7 +35,17 @@ const Widget = () => {
             <Text fontSize="lg" as="b">
               Skelton Text
             </Text>
+            <p></p>
             <SkeletonText />
+          </div>
+        </div>
+        <div className="tw-col-span-4">
+          <div>
+            <Text fontSize="lg" as="b">
+              Skelton Image
+            </Text>
+            <p></p>
+            <SkeletonImage/>
           </div>
         </div>
         <div className="tw-col-span-12">
@@ -158,48 +164,6 @@ const Widget = () => {
                 <slot name="footer">
                   <div>
                     <Button onClick={toggleModal2}>
-                      Terima
-                    </Button>
-                    <Button colorScheme="red" ml={3}>
-                      Tolak
-                    </Button>
-                  </div>
-                </slot>
-              </ModalDialog>
-            </div>
-          </div>
-        </div>
-        <div className="tw-col-span-3">
-          <div>
-            <Text fontSize="lg" as="b">
-              Modal Dialog
-            </Text>
-
-            <div className="tw-mt-2">
-              <Button onClick={toggleModal3}>
-                Open Dialog Modal 3
-              </Button>
-
-              <ModalDialog
-                toggleShow={modalDialog3}
-                triggerClose={toggleModal3}
-                size="lg"
-                maxHeight="600"
-                isCentered={true}
-                closeOnOverlayClick={true}
-                title="Dialog 3"
-              >
-                <slot name="header">
-                  <div>Header slot</div>
-                </slot>
-
-                <slot name="content">
-                  <div>Lorem Ipsum is simply dummy text of the printing</div>
-                </slot>
-
-                <slot name="footer">
-                  <div>
-                    <Button onClick={toggleModal3}>
                       Terima
                     </Button>
                     <Button colorScheme="red" ml={3}>
