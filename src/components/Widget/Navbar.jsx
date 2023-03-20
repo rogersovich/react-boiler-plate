@@ -40,6 +40,11 @@ const Navbar = () => {
                   Widget
                 </Button>
               </Link>
+              <Link to={"kucing/2"}>
+                <Button colorScheme="messenger" variant="ghost">
+                  Params
+                </Button>
+              </Link>
 
               <div>
                 <Menu>

@@ -1,47 +1,25 @@
 import { useNavigate } from "react-router-dom"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import Select from "react-select"
-import { useForm, Controller } from "react-hook-form"
-import { Button } from "@chakra-ui/react"
-import {useState} from 'react'
 
-const options = [
-  { value: "option1", label: "Option 1" },
-  { value: "option2", label: "Option 2" },
-  { value: "option3", label: "Option 3" },
-]
-
-const schema = yup.object().shape({
-  kopi: yup.array().min(1, "Please select at least one option"),
-})
+import { useState, useCallback, memo } from "react"
 
 const Kucing = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      kopi: [],
-    },
-  })
-
-  const [fruits, setFruits] = useState([]);
-
-  const handleFruitChange = (selectedFruits) => {
-    setFruits(selectedFruits);
-  };
-
-  const onSubmit = (data) => {
-    console.log(data)
-  }
-
   const navigate = useNavigate()
 
   const routeBack = () => {
     navigate(-1)
+  }
+
+  const [number, setNumber] = useState(0)
+  const [count, setCount] = useState(0)
+  const [food, setFood] = useState(0)
+  const incrementNumber = useCallback(() => {
+    setNumber(number + 1)
+  }, [number])
+  const incrementCount = useCallback(() => {
+    setCount(count + 1)
+  }, [count])
+  const incrementFood = () => {
+    setFood(food + 1)
   }
 
   return (
@@ -50,35 +28,36 @@ const Kucing = () => {
       <br />
       <button onClick={routeBack}>Go back</button>
       <p></p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-
-        <Controller
-          name="kopi"
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Select
-              isMulti
-              options={options}
-              onBlur={onBlur}
-              onChange={(selectedOptions) => {
-                const selectedValues = selectedOptions
-                  ? selectedOptions.map((option) => option.value)
-                  : []
-                onChange(selectedValues)
-                handleFruitChange(selectedOptions)
-              }}
-              value={fruits}
-            />
-          )}
-        />
-
-        {errors.kopi && <span role="alert">{errors.kopi.message}</span>}
-        <Button mt={4} colorScheme="teal" type="submit">
-          Submit
-        </Button>
-      </form>
+      <div>
+        <Show label="number" val={number} />
+        <Button label="number" action={incrementNumber} />
+        <Show label="count" val={count} />
+        <Button label="count" action={incrementCount} />
+        <Show label="food" val={food} />
+        <Button label="food" action={incrementFood} />
+      </div>
     </>
   )
 }
+
+const Show = memo(({ label, val }) => {
+  console.log(`${label} inside show render`)
+  return (
+    <div>
+      <div>
+        {label} {val}
+      </div>
+    </div>
+  )
+})
+
+const Button = memo(({ label, action }) => {
+  console.log(`${label} inside button render`)
+  return (
+    <div>
+      <button onClick={action}>add {label}</button>
+    </div>
+  )
+})
 
 export default Kucing

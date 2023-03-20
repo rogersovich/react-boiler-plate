@@ -4,11 +4,24 @@ import SkeletonTable from "components/Widget/SkeletonTable"
 import ModalAlert from "components/Widget/ModalAlert"
 import ModalDialog from "components/Widget/ModalDialog"
 import { Text, Button } from "@chakra-ui/react"
-import { useState } from "react"
+import { useState, useCallback } from "react"
 
 const Widget = () => {
   const [modalAlert, setModalAlert] = useState(false)
   const [modalDialog, setModalDialog] = useState(false)
+  const toggleModal = useCallback(() => {
+    setModalDialog(!modalDialog)
+  }, [modalDialog])
+
+  const [modalDialog2, setModalDialog2] = useState(false)
+  const toggleModal2 = useCallback(() => {
+    setModalDialog2(!modalDialog2)
+  }, [modalDialog2])
+
+  const [modalDialog3, setModalDialog3] = useState(false)
+  const toggleModal3 = useCallback(() => {
+    setModalDialog3(!modalDialog3)
+  }, [modalDialog3])
 
   return (
     <>
@@ -79,17 +92,18 @@ const Widget = () => {
             </Text>
 
             <div className="tw-mt-2">
-              <Button onClick={() => setModalDialog(!modalDialog)}>
+              <Button onClick={toggleModal}>
                 Open Dialog Modal
               </Button>
 
               <ModalDialog
                 toggleShow={modalDialog}
-                triggerClose={() => setModalDialog(false)}
+                triggerClose={toggleModal}
                 size="lg"
                 maxHeight="600"
                 isCentered={true}
                 closeOnOverlayClick={true}
+                title="Dialog 1"
               >
                 <slot name="header">
                   <div>Header slot</div>
@@ -101,7 +115,91 @@ const Widget = () => {
 
                 <slot name="footer">
                   <div>
-                    <Button onClick={() => setModalDialog(!modalDialog)}>
+                    <Button onClick={toggleModal}>
+                      Terima
+                    </Button>
+                    <Button colorScheme="red" ml={3}>
+                      Tolak
+                    </Button>
+                  </div>
+                </slot>
+              </ModalDialog>
+            </div>
+          </div>
+        </div>
+        <div className="tw-col-span-3">
+          <div>
+            <Text fontSize="lg" as="b">
+              Modal Dialog
+            </Text>
+
+            <div className="tw-mt-2">
+              <Button onClick={toggleModal2}>
+                Open Dialog Modal 2
+              </Button>
+
+              <ModalDialog
+                toggleShow={modalDialog2}
+                triggerClose={toggleModal2}
+                size="lg"
+                maxHeight="600"
+                isCentered={true}
+                closeOnOverlayClick={true}
+                title="Dialog 2"
+              >
+                <slot name="header">
+                  <div>Header slot</div>
+                </slot>
+
+                <slot name="content">
+                  <div>Lorem Ipsum is simply dummy text of the printing</div>
+                </slot>
+
+                <slot name="footer">
+                  <div>
+                    <Button onClick={toggleModal2}>
+                      Terima
+                    </Button>
+                    <Button colorScheme="red" ml={3}>
+                      Tolak
+                    </Button>
+                  </div>
+                </slot>
+              </ModalDialog>
+            </div>
+          </div>
+        </div>
+        <div className="tw-col-span-3">
+          <div>
+            <Text fontSize="lg" as="b">
+              Modal Dialog
+            </Text>
+
+            <div className="tw-mt-2">
+              <Button onClick={toggleModal3}>
+                Open Dialog Modal 3
+              </Button>
+
+              <ModalDialog
+                toggleShow={modalDialog3}
+                triggerClose={toggleModal3}
+                size="lg"
+                maxHeight="600"
+                isCentered={true}
+                closeOnOverlayClick={true}
+                title="Dialog 3"
+              >
+                <slot name="header">
+                  <div>Header slot</div>
+                </slot>
+
+                <slot name="content">
+                  <div>Lorem Ipsum is simply dummy text of the printing</div>
+                </slot>
+
+                <slot name="footer">
+                  <div>
+                    <Button onClick={toggleModal3}>
                       Terima
                     </Button>
                     <Button colorScheme="red" ml={3}>
