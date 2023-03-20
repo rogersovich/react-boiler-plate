@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react"
 import { ChevronDownIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
+// import { useState } from "react"
 
 const Navbar = () => {
   return (
@@ -39,11 +40,25 @@ const Navbar = () => {
                   Widget
                 </Button>
               </Link>
-              <Link to={"kucing/1"}>
-                <Button colorScheme="messenger" variant="ghost">
-                  Params
-                </Button>
-              </Link>
+
+              <div>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    color="messenger.600"
+                    variant="ghost"
+                    rightIcon={<ChevronDownIcon />}
+                  >
+                    Apps
+                  </MenuButton>
+                  <MenuList>
+                    <Link to={"rick-and-morty"}>
+                      <MenuItem>Rick & Morty</MenuItem>
+                    </Link>
+                    <MenuItem>Random Cat</MenuItem>
+                  </MenuList>
+                </Menu>
+              </div>
             </HStack>
           </div>
         </div>
