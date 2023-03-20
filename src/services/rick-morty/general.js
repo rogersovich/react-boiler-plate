@@ -11,12 +11,14 @@ export const getCharaters = async (payload) => {
     return error.response;
   }
 };
-// export const getType = async () => {
-//   try {
-//     const response = await API.get("bahan/get_type");
+export const getLocations = async (payload) => {
+  try {
+    const response = await API.get("location", {
+      params: payload,
+    });
 
-//     return response;
-//   } catch (error) {
-//     return error.response;
-//   }
-// };
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

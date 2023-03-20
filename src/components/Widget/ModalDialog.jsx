@@ -22,7 +22,7 @@ const ModalDialog = memo(
     maxHeight = 500,
     children,
   }) => {
-    console.log("render" + title)
+  
     const checkChild = (el, type) => {
       if (
         typeof el.find((child) => child.props.name === type) !== "undefined"
