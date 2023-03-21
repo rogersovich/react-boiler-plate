@@ -1,22 +1,48 @@
 import Pagination from "utils/Pagination"
-import { Card, CardBody, Text, Image, Box } from "@chakra-ui/react"
+import { Card, CardBody, Text, Image, Box, Input } from "@chakra-ui/react"
 import SkeletonImage from "components/Widget/SkeletonImage"
+import { useState } from "react"
 
 const TabCharacter = ({
   isLoading,
   characters,
   characterParams,
   onChangePagination,
-  onShowDetail
+  onShowDetail,
+  onSearch,
+  search,
 }) => {
-
   const showDetail = (ID) => {
     onShowDetail(ID)
+  }
+
+  const [querySearch, setQuerySearch] = useState(search)
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    setQuerySearch(e.target.value)
+    setTimeout(() => {
+      onSearch(e.target.value)
+    }, 2000)
   }
 
   return (
     <>
       <div className="grid-12 tw-gap-4">
+        {!isLoading && (
+          <div className="tw-col-span-12">
+            <div className="grid-12 tw-gap-4">
+              <div className="tw-col-span-8">
+                <Input
+                  placeholder="Search By Name"
+                  onChange={handleSearch}
+                  value={querySearch}
+                />
+              </div>
+              <div className="tw-col-start-10 tw-col-end-13">adsfdsf</div>
+            </div>
+          </div>
+        )}
         {!isLoading && characters.length > 0 ? (
           <div className="tw-col-span-12">
             <div className="grid-12 tw-gap-4">

@@ -17,6 +17,7 @@ const RickAndMorty = () => {
 
   const [characters, setCharacters] = useState([])
   const [character, setCharacter] = useState(null)
+  const [characterSearch, setCharacterSearch] = useState("")
   const [characterParams, setCharacterParams] = useState({
     page: 1,
     count: 0,
@@ -56,13 +57,11 @@ const RickAndMorty = () => {
   const toggleModal = useCallback(() => {
     setModal(!modal)
   }, [modal])
-
   const toggleDetail = useCallback(
     async (ID) => {
       setIsLoadingDetail(true)
 
-      setTimeout(async() => {
-        
+      setTimeout(async () => {
         await getCharater(ID).then((res) => {
           if (res.status === 200) {
             const { data } = res
@@ -70,9 +69,9 @@ const RickAndMorty = () => {
           }
         })
         setIsLoadingDetail(false)
-  
+
         setModal(!modal)
-      }, 250);
+      }, 250)
     },
     [modal]
   )
@@ -87,6 +86,8 @@ const RickAndMorty = () => {
           characterParams={characterParams}
           onChangePagination={onChangePagination}
           onShowDetail={toggleDetail}
+          search={characterSearch}
+          onSearch={(state) => setCharacterSearch(state)}
         />
       ),
     },
@@ -106,7 +107,14 @@ const RickAndMorty = () => {
   useEffect(() => {
     const fetchCharacters = async () => {
       setIsLoading(true)
-      await getCharaters({ page: characterParams.page }).then((res) => {
+      const params = {
+        page: characterParams.page,
+      }
+
+      if (characterSearch !== "") {
+        params.name = characterSearch
+      }
+      await getCharaters(params).then((res) => {
         if (res.status === 200) {
           const { data } = res
           setCharacters(data.results)
@@ -121,6 +129,7 @@ const RickAndMorty = () => {
 
           setIsLoading(false)
         } else {
+          setCharacters([])
           setIsLoading(false)
         }
       })
@@ -154,7 +163,7 @@ const RickAndMorty = () => {
     } else {
       fetchLocations()
     }
-  }, [characterParams.page, locationParams.page, tabIndex])
+  }, [characterParams.page, characterSearch, locationParams.page, tabIndex])
 
   return (
     <>
@@ -171,7 +180,7 @@ const RickAndMorty = () => {
         <Tabs
           defaultIndex={tabIndex}
           variant="soft-rounded"
-          colorScheme="blue"
+          colorScheme="messenger"
           onChange={(i) => setTabIndex(i)}
         >
           <TabList>
