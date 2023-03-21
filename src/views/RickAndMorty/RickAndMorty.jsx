@@ -75,6 +75,7 @@ const RickAndMorty = () => {
     },
     [modal]
   )
+  
 
   const tabs = [
     {
@@ -112,6 +113,7 @@ const RickAndMorty = () => {
       }
 
       if (characterSearch !== "") {
+        setIsLoadingDetail(true)
         params.name = characterSearch
       }
       await getCharaters(params).then((res) => {
@@ -128,9 +130,11 @@ const RickAndMorty = () => {
           }))
 
           setIsLoading(false)
+          setIsLoadingDetail(false)
         } else {
           setCharacters([])
           setIsLoading(false)
+          setIsLoadingDetail(false)
         }
       })
     }
@@ -168,14 +172,13 @@ const RickAndMorty = () => {
   return (
     <>
       <div>
-        {!isLoadingDetail ? (
+        {isLoadingDetail && <LoadingOverlay isLoading={isLoadingDetail} />}
+        {!isLoadingDetail && (
           <ModalDetailCharacter
             isOpen={modal}
             character={character}
             toggleOpen={toggleModal}
           />
-        ) : (
-          <LoadingOverlay isLoading={isLoadingDetail} />
         )}
         <Tabs
           defaultIndex={tabIndex}
