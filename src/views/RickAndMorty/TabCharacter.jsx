@@ -1,5 +1,6 @@
 import Pagination from "utils/Pagination"
 import { Card, CardBody, Text, Image, Box, Input } from "@chakra-ui/react"
+import Select from "react-select"
 import SkeletonImage from "components/Widget/SkeletonImage"
 import { useState } from "react"
 
@@ -10,20 +11,91 @@ const TabCharacter = ({
   onChangePagination,
   onShowDetail,
   onSearch,
-  search,
+  changeFilterStatus,
+  changeFilterGender,
 }) => {
   const showDetail = (ID) => {
     onShowDetail(ID)
   }
 
-  const [querySearch, setQuerySearch] = useState(search)
-
+  // search
+  const [querySearch, setQuerySearch] = useState("")
   const handleSearch = (e) => {
     e.preventDefault()
     setQuerySearch(e.target.value)
     setTimeout(() => {
       onSearch(e.target.value)
-    }, 2000)
+    }, 1500)
+  }
+
+  const styleSelect = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: "#E2E8F0",
+      borderWidth: "1px",
+      height: "2.5rem",
+      minHeight: "2.5rem",
+      borderRadius: "0.375rem",
+      ":focus": {
+        borderWidth: "2px",
+      },
+    }),
+  }
+
+  //filter status
+  const [filterStatus, setFilterStatus] = useState("all")
+  const statusOptions = [
+    {
+      label: "All",
+      value: "all",
+    },
+    {
+      label: "Alive",
+      value: "alive",
+    },
+    {
+      label: "Dead",
+      value: "dead",
+    },
+    {
+      label: "Unknown",
+      value: "unknown",
+    },
+  ]
+
+  const handleChangeStatus = (selectedOption) => {
+    changeFilterStatus(selectedOption.value)
+    setFilterStatus(selectedOption.value)
+  }
+
+  //filter gender
+  const [filterGender, setFilterGender] = useState("all")
+  const genderOptions = [
+    {
+      label: "All",
+      value: "all",
+    },
+    {
+      label: "Female",
+      value: "female",
+    },
+    {
+      label: "Male",
+      value: "male",
+    },
+    {
+      label: "Genderless ",
+      value: "genderless ",
+    },
+    {
+      label: "Unknown",
+      value: "unknown",
+    },
+  ]
+
+  const handleChangeGender = (selectedOption) => {
+    changeFilterGender(selectedOption.value)
+    setFilterGender(selectedOption.value)
   }
 
   return (
@@ -33,13 +105,37 @@ const TabCharacter = ({
           <div className="tw-col-span-12">
             <div className="grid-12 tw-gap-4">
               <div className="tw-col-span-8">
+                <div className="tw-mb-2 medium">Search here</div>
                 <Input
                   placeholder="Search By Name"
                   onChange={handleSearch}
                   value={querySearch}
                 />
               </div>
-              <div className="tw-col-start-10 tw-col-end-13">adsfdsf</div>
+              <div className="tw-col-span-2">
+                <div className="tw-mb-2 medium">Gender</div>
+                <Select
+                  placeholder="Choose Gender"
+                  options={genderOptions}
+                  onChange={handleChangeGender}
+                  value={genderOptions.find(
+                    (option) => option.value === filterGender
+                  )}
+                  styles={styleSelect}
+                />
+              </div>
+              <div className="tw-col-span-2">
+                <div className="tw-mb-2 medium">Status</div>
+                <Select
+                  placeholder="Choose Status"
+                  options={statusOptions}
+                  onChange={handleChangeStatus}
+                  value={statusOptions.find(
+                    (option) => option.value === filterStatus
+                  )}
+                  styles={styleSelect}
+                />
+              </div>
             </div>
           </div>
         )}

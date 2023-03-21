@@ -18,6 +18,8 @@ const RickAndMorty = () => {
   const [characters, setCharacters] = useState([])
   const [character, setCharacter] = useState(null)
   const [characterSearch, setCharacterSearch] = useState("")
+  const [characterStatus, setCharacterStatus] = useState("all")
+  const [characterGender, setCharacterGender] = useState("all")
   const [characterParams, setCharacterParams] = useState({
     page: 1,
     count: 0,
@@ -75,7 +77,6 @@ const RickAndMorty = () => {
     },
     [modal]
   )
-  
 
   const tabs = [
     {
@@ -87,8 +88,9 @@ const RickAndMorty = () => {
           characterParams={characterParams}
           onChangePagination={onChangePagination}
           onShowDetail={toggleDetail}
-          search={characterSearch}
           onSearch={(state) => setCharacterSearch(state)}
+          changeFilterStatus={(state) => setCharacterStatus(state)}
+          changeFilterGender={(state) => setCharacterGender(state)}
         />
       ),
     },
@@ -116,6 +118,17 @@ const RickAndMorty = () => {
         setIsLoadingDetail(true)
         params.name = characterSearch
       }
+
+      if (characterStatus !== "all") {
+        setIsLoadingDetail(true)
+        params.status = characterStatus
+      }
+
+      if (characterGender !== "all") {
+        setIsLoadingDetail(true)
+        params.gender = characterGender
+      }
+
       await getCharaters(params).then((res) => {
         if (res.status === 200) {
           const { data } = res
@@ -167,7 +180,14 @@ const RickAndMorty = () => {
     } else {
       fetchLocations()
     }
-  }, [characterParams.page, characterSearch, locationParams.page, tabIndex])
+  }, [
+    characterParams.page,
+    characterSearch,
+    characterStatus,
+    characterGender,
+    locationParams.page,
+    tabIndex,
+  ])
 
   return (
     <>
