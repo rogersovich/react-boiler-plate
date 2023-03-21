@@ -2,6 +2,7 @@ import SkeletonCard from "components/Widget/SkeletonCard"
 import SkeletonText from "components/Widget/SkeletonParagraph"
 import SkeletonTable from "components/Widget/SkeletonTable"
 import SkeletonImage from "components/Widget/SkeletonImage"
+import LoadingOverlay from "components/Widget/LoadingOverlay"
 import ModalAlert from "components/Widget/ModalAlert"
 import ModalDialog from "components/Widget/ModalDialog"
 import { Text, Button } from "@chakra-ui/react"
@@ -18,6 +19,8 @@ const Widget = () => {
   const toggleModal2 = useCallback(() => {
     setModalDialog2(!modalDialog2)
   }, [modalDialog2])
+
+  const [loading, setLoading] = useState(false)
   return (
     <>
       <div className="grid-12 tw-gap-4">
@@ -45,7 +48,27 @@ const Widget = () => {
               Skelton Image
             </Text>
             <p></p>
-            <SkeletonImage/>
+            <SkeletonImage />
+          </div>
+        </div>
+        <div className="tw-col-span-4">
+          <div>
+            <Text fontSize="lg" as="b">
+              Loading Overlay
+            </Text>
+            <p></p>
+            <div>
+              <Button
+                colorScheme={"messenger"}
+                onClick={() => setLoading((state) => !state)}
+              >
+                Set Loading
+              </Button>
+              <LoadingOverlay
+                isLoading={loading}
+                toggleLoading={() => setLoading((state) => !state)}
+              />
+            </div>
           </div>
         </div>
         <div className="tw-col-span-12">
@@ -98,9 +121,7 @@ const Widget = () => {
             </Text>
 
             <div className="tw-mt-2">
-              <Button onClick={toggleModal}>
-                Open Dialog Modal
-              </Button>
+              <Button onClick={toggleModal}>Open Dialog Modal</Button>
 
               <ModalDialog
                 toggleShow={modalDialog}
@@ -121,9 +142,7 @@ const Widget = () => {
 
                 <slot name="footer">
                   <div>
-                    <Button onClick={toggleModal}>
-                      Terima
-                    </Button>
+                    <Button onClick={toggleModal}>Terima</Button>
                     <Button colorScheme="red" ml={3}>
                       Tolak
                     </Button>
@@ -140,9 +159,7 @@ const Widget = () => {
             </Text>
 
             <div className="tw-mt-2">
-              <Button onClick={toggleModal2}>
-                Open Dialog Modal 2
-              </Button>
+              <Button onClick={toggleModal2}>Open Dialog Modal 2</Button>
 
               <ModalDialog
                 toggleShow={modalDialog2}
@@ -163,9 +180,7 @@ const Widget = () => {
 
                 <slot name="footer">
                   <div>
-                    <Button onClick={toggleModal2}>
-                      Terima
-                    </Button>
+                    <Button onClick={toggleModal2}>Terima</Button>
                     <Button colorScheme="red" ml={3}>
                       Tolak
                     </Button>
