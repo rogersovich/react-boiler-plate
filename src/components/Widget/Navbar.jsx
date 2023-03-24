@@ -60,7 +60,9 @@ const Navbar = () => {
                     <Link to={"rick-and-morty"}>
                       <MenuItem>Rick & Morty</MenuItem>
                     </Link>
-                    <MenuItem>Random Cat</MenuItem>
+                    <Link to={"commerce"}>
+                      <MenuItem>E-Commerce</MenuItem>
+                    </Link>
                   </MenuList>
                 </Menu>
               </div>

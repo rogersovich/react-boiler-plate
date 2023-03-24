@@ -5,16 +5,19 @@ import Kucing from "views/Kucing"
 import Form from "views/Form"
 import Widget from "views/Widget"
 import RickAndMorty from "views/RickAndMorty/RickAndMorty"
+// commerce
+import AuthCommerce from "views/Commerce/Auth/Auth"
+import ProductCommerce from "views/Commerce/Product/Product"
+// general
 import ErrorPage from "views/ErrorPage"
 import ProtectedRoute from "./protected-route"
 
-var isLogin = localStorage.getItem("web-key")
 
 const router = createBrowserRouter([
   {
     path: "/",
     errorElement: <ErrorPage />,
-    element: <LayoutHome/>,
+    element: <LayoutHome />,
     children: [
       {
         path: "",
@@ -22,11 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/kucing/:kucingId",
-        element: (
-          <ProtectedRoute user={isLogin}>
-            <Kucing />
-          </ProtectedRoute>
-        ),
+        element: <Kucing />,
       },
       {
         path: "/form",
@@ -39,6 +38,18 @@ const router = createBrowserRouter([
       {
         path: "/rick-and-morty",
         element: <RickAndMorty />,
+      },
+      {
+        path: "/commerce",
+        element: (
+          <ProtectedRoute>
+            <ProductCommerce />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/commerce/auth",
+        element: <AuthCommerce />,
       },
     ],
   },
