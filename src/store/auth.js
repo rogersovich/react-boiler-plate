@@ -20,6 +20,7 @@ export const authSlice = createSlice({
   initialState: {
     token: null,
     profile: {
+      id: null,
       username: null,
       email: null,
       firstName: null,
@@ -37,6 +38,7 @@ export const authSlice = createSlice({
       state.token = null
     },
     setProfile: (state, action) => {
+      state.profile.id = action.payload.id
       state.profile.username = action.payload.username
       state.profile.email = action.payload.email
       state.profile.firstName = action.payload.firstName
@@ -44,6 +46,7 @@ export const authSlice = createSlice({
       state.profile.image = action.payload.image
     },
     unsetProfile: (state) => {
+      state.profile.id = null
       state.profile.username = null
       state.profile.email = null
       state.profile.firstName = null
