@@ -12,3 +12,13 @@ export const fetchProducts = async (payload) => {
   }
 };
 
+export const fetchProduct = async (ID) => {
+  try {
+    const response = await API.get(`products/${ID}`);
+
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+

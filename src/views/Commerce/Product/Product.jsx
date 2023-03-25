@@ -1,11 +1,15 @@
-import { fetchProducts } from "services/dummy-json/product"
-import { useEffect, useState } from "react"
+import { fetchProducts, fetchProduct } from "services/dummy-json/product"
+import { useEffect, useState, useCallback } from "react"
+import LoadingOverlay from "components/Widget/LoadingOverlay"
 import SkeletonImage from "components/Widget/SkeletonImage"
 import ProductList from "./components/ProductList"
+import ModalProduct from "./components/ModalProduct"
 
 const Product = () => {
   const [products, setProducts] = useState([])
+  const [product, setProduct] = useState([])
   const [isLoading, setIsLoading] = useState([])
+  const [isLoadingDetail, setIsLoadingDetail] = useState(false)
   const [params, setparams] = useState({
     page: 1,
     skip: 0,
@@ -21,12 +25,36 @@ const Product = () => {
     }))
   }
 
+  // modal detail
+  const [modal, setModal] = useState(false)
+  const toggleModal = useCallback(() => {
+    setModal(!modal)
+  }, [modal])
+  const toggleDetail = useCallback(
+    async (ID) => {
+      setIsLoadingDetail(true)
+
+      setTimeout(async () => {
+        await fetchProduct(ID).then((res) => {
+          if (res.status === 200) {
+            const { data } = res
+            setProduct(data)
+          }
+        })
+        setIsLoadingDetail(false)
+
+        setModal(!modal)
+      }, 250)
+    },
+    [modal]
+  )
+
   useEffect(() => {
     const handleFetchProduct = async () => {
       setIsLoading(true)
       const bodyParams = {
         limit: params.limit,
-        skip: params.skip
+        skip: params.skip,
       }
       await fetchProducts(bodyParams).then((res) => {
         if (res.status === 200) {
@@ -50,11 +78,20 @@ const Product = () => {
 
   return (
     <>
+      {isLoadingDetail && <LoadingOverlay isLoading={isLoadingDetail} />}
+      {!isLoadingDetail && (
+        <ModalProduct
+          isOpen={modal}
+          product={product}
+          toggleOpen={toggleModal}
+        />
+      )}
       {!isLoading && products.length > 0 ? (
         <ProductList
           products={products}
           onChangePagination={onChangePagination}
           params={params}
+          onShowDetail={toggleDetail}
         />
       ) : !isLoading && products.length === 0 ? (
         <div>Tidak ada data</div>

@@ -1,8 +1,15 @@
 import { Card, CardBody, Text, Image, Tag } from "@chakra-ui/react"
 import Pagination from "utils/Pagination"
 
-const ProductList = ({ products,  onChangePagination, params }) => {
-  console.log(params)
+const ProductList = ({
+  products,
+  onChangePagination,
+  params,
+  onShowDetail,
+}) => {
+  const showDetail = (ID) => {
+    onShowDetail(ID)
+  }
   return (
     <>
       <div>
@@ -14,6 +21,7 @@ const ProductList = ({ products,  onChangePagination, params }) => {
                 backgroundColor={"gray.100"}
                 color={"white"}
                 className="tw-cursor-pointer"
+                onClick={() => showDetail(product.id)}
               >
                 <CardBody p={3}>
                   <div>
@@ -31,15 +39,25 @@ const ProductList = ({ products,  onChangePagination, params }) => {
                     <Text fontSize="xl" as={"b"} color={"black"}>
                       {product.title}
                     </Text>
-                    <div className="fc tw-gap-3 tw-mb-2.5">
-                      <Text
-                        fontSize="base"
-                        as={"div"}
-                        color={"red.500"}
-                        fontWeight={"medium"}
-                      >
-                        $ {product.price}
-                      </Text>
+                    <div className="fc tw-gap-4 tw-mb-2.5">
+                      <div className="fc tw-gap-2">
+                        <Text
+                          fontSize="base"
+                          as={"s"}
+                          color={"gray.400"}
+                          fontWeight={"medium"}
+                        >
+                          ${product.price}
+                        </Text>
+                        <Text
+                          fontSize="base"
+                          as={"div"}
+                          color={"red.500"}
+                          fontWeight={"medium"}
+                        >
+                          ${product.discountPercentage}
+                        </Text>
+                      </div>
                       <Text
                         fontSize="base"
                         as={"div"}
