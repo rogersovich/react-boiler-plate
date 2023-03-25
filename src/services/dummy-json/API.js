@@ -1,4 +1,6 @@
 import axios from "axios"
+import { useDispatch } from "react-redux"
+import { unsetToken, unsetProfile, unsetError } from "store/auth"
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_DUMMY_JSON,
@@ -25,7 +27,18 @@ api.interceptors.response.use(
   function (response) {
     return response
   },
-  function (error) {
+  async function (error) {
+    const dispatch = useDispatch()
+
+    const originalRequest = error.config
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+      // localStorage.removeItem("persist:rogersovich")
+      dispatch(unsetToken())
+      dispatch(unsetProfile())
+      dispatch(unsetError())
+      return api(originalRequest)
+    }
     return Promise.reject(error)
   }
 )

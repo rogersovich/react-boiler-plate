@@ -1,12 +1,7 @@
-import api from "./API";
+import api from "./API"
 
-export const login = async (payload) => {
-  try {
-    const response = await api.post("auth/login", JSON.stringify(payload));
+export const loginAPI = async (payload) => {
+  const response = await api.post("auth/login", JSON.stringify(payload))
 
-    return response;
-  } catch (error) {
-    return error.response;
-  }
-};
-
+  return response
+}

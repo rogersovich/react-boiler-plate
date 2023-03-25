@@ -9,9 +9,23 @@ import {
 } from "@chakra-ui/react"
 import { ChevronDownIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
-// import { useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { unsetToken, unsetProfile, unsetError } from "store/auth"
+import { useNavigate } from "react-router-dom"
 
 const Navbar = () => {
+  const { token } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    dispatch(unsetToken())
+    dispatch(unsetProfile())
+    dispatch(unsetError())
+
+    navigate("/commerce/auth")
+  }
+
   return (
     <div>
       <Box
@@ -72,11 +86,11 @@ const Navbar = () => {
         <div className="tw-col-span-2">
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              Profile
+              Rogersovich
             </MenuButton>
             <MenuList>
-              <MenuItem>About Me</MenuItem>
-              <MenuItem>Emerald</MenuItem>
+              <MenuItem>Profile</MenuItem>
+              {token && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
             </MenuList>
           </Menu>
         </div>

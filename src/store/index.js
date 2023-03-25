@@ -21,8 +21,8 @@ const reducers = combineReducers({
 })
 
 const persistConfig = {
-  key: "root",
-  storage: storage,
+  key: "rogersovich",
+  storage,
   stateReconciler: autoMergeLevel2,
   blacklist: ["counter"],
 }

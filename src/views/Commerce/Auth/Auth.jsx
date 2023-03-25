@@ -20,8 +20,9 @@ const Auth = () => {
   const isLoading = useSelector((state) => state.auth.isLoading)
   const error = useSelector((state) => state.auth.error)
   const initLogin = {
-    username: "kminchelles",
+    username: "kminchelle",
     password: "0lelplR",
+    expiresInMins: 2
   }
 
   const {

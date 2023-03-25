@@ -29,7 +29,7 @@ const Home = () => {
     dispatch(unsetProfile())
   }
 
-  const ls = JSON.parse(localStorage.getItem("persist:root")).auth
+  const ls = JSON.parse(localStorage.getItem("persist:rogersovich")).auth
 
   const tokenBearer =  JSON.parse(ls).token
   console.log(tokenBearer, "testing")

@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import api from "services/dummy-json/API"
+import { loginAPI } from "services/dummy-json/auth"
 
 export const login = createAsyncThunk("auth/login", async (credentials) => {
-  const response = await api.post("auth/login", JSON.stringify(credentials))
+  const response = await loginAPI(credentials)
   return response.data
 })
 
@@ -70,10 +71,10 @@ export const authSlice = createSlice({
         // set profile
         authSlice.caseReducers.setProfile(state, { payload: data })
 
+        setAuthToken(data.token)
+
         state.isLoading = false
         state.error = null
-
-        setAuthToken(data)
       })
       // handle failed login
       .addCase(login.rejected, (state, action) => {
