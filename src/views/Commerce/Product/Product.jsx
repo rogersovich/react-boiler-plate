@@ -1,11 +1,15 @@
 import { fetchProducts, fetchProduct } from "services/dummy-json/product"
+import { createCartUser } from "services/dummy-json/cart"
 import { useEffect, useState, useCallback } from "react"
+import { useToast } from "@chakra-ui/react"
 import LoadingOverlay from "components/Widget/LoadingOverlay"
 import SkeletonImage from "components/Widget/SkeletonImage"
 import ProductList from "./components/ProductList"
 import ModalProduct from "./components/ModalProduct"
 
 const Product = () => {
+  const toast = useToast()
+
   const [products, setProducts] = useState([])
   const [product, setProduct] = useState([])
   const [isLoading, setIsLoading] = useState([])
@@ -46,6 +50,35 @@ const Product = () => {
     [modal]
   )
 
+  const onAddCart = async (body) => {
+    toggleModal()
+    const createBody = {
+      userId: 1,
+      products: body,
+    }
+    setIsLoadingDetail(true)
+    await createCartUser(createBody).then((res) => {
+      if (res.status === 200) {
+        toast({
+          title: "Berhasil Menambakan Item Keranjang",
+          status: "success",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        })
+      } else {
+        toast({
+          title: "Gagal Menambakan Item Keranjang",
+          status: "errorr",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        })
+      }
+      setIsLoadingDetail(false)
+    })
+  }
+
   useEffect(() => {
     const handleFetchProduct = async () => {
       setIsLoading(true)
@@ -81,6 +114,7 @@ const Product = () => {
           isOpen={modal}
           product={product}
           toggleOpen={toggleModal}
+          onAddCart={onAddCart}
         />
       )}
       {!isLoading && products.length > 0 ? (

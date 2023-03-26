@@ -10,6 +10,15 @@ export const fetchCartUser = async (payload) => {
   }
 }
 
+export const createCartUser = async (payload) => {
+  try {
+    const response = await API.post(`carts/add`, JSON.stringify(payload))
+
+    return response
+  } catch (error) {
+    return error.response
+  }
+}
 export const updateCartUser = async (payload) => {
   try {
     const response = await API.put(

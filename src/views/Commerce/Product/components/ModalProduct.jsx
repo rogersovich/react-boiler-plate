@@ -1,7 +1,15 @@
 import ModalDialog from "components/Widget/ModalDialog"
 import { Image, Text, Tag, Box, Button } from "@chakra-ui/react"
 
-const ModalProduct = ({ isOpen, product, toggleOpen }) => {
+const ModalProduct = ({ isOpen, product, toggleOpen, onAddCart }) => {
+  const handleAddCart = () => {
+    onAddCart([
+      {
+        id: product.id,
+        quantity: 1,
+      },
+    ])
+  }
   return (
     <>
       {isOpen && (
@@ -108,7 +116,12 @@ const ModalProduct = ({ isOpen, product, toggleOpen }) => {
             </div>
             <div className="tw-absolute tw-z-10 tw-bottom-0 tw-left-0 tw-px-4 tw-py-3 tw-bg-white tw-w-full tw-border tw-border-gray-200">
               <div>
-                <Button colorScheme={'whatsapp'} variant={'solid'} width={'full'}>
+                <Button
+                  colorScheme={"whatsapp"}
+                  variant={"solid"}
+                  width={"full"}
+                  onClick={handleAddCart}
+                >
                   Add to Cart
                 </Button>
               </div>
