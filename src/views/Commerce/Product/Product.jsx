@@ -33,18 +33,15 @@ const Product = () => {
   const toggleDetail = useCallback(
     async (ID) => {
       setIsLoadingDetail(true)
+      await fetchProduct(ID).then((res) => {
+        if (res.status === 200) {
+          const { data } = res
+          setProduct(data)
+        }
+      })
+      setIsLoadingDetail(false)
 
-      setTimeout(async () => {
-        await fetchProduct(ID).then((res) => {
-          if (res.status === 200) {
-            const { data } = res
-            setProduct(data)
-          }
-        })
-        setIsLoadingDetail(false)
-
-        setModal(!modal)
-      }, 250)
+      setModal(!modal)
     },
     [modal]
   )

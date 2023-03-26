@@ -6,12 +6,17 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  useToast,
 } from "@chakra-ui/react"
 import { ChevronDownIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { unsetToken, unsetProfile, unsetError } from "store/auth"
 import { useNavigate } from "react-router-dom"
+import { fetchCartUser, updateCartUser } from "services/dummy-json/cart"
+import MenuCart from "./MenuCart"
+
 
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth)
@@ -25,6 +30,55 @@ const Navbar = () => {
 
     navigate("/commerce/auth")
   }
+
+  const [carts, setCarts] = useState([])
+  const [cartId, setCartId] = useState([])
+  const [totalCart, setTotalCart] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const toast = useToast()
+
+  const onUpdateCart = async (body) => {
+    await updateCartUser(body).then((res) => {
+      console.log(res.data)
+      if (res.status === 200) {
+        toast({
+          title: "Berhasil Update Keranjang",
+          status: "success",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        })
+      } else {
+        toast({
+          title: "Gagal Update Keranjang",
+          status: "errorr",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        })
+      }
+    })
+  }
+
+  useEffect(() => {
+    const handleFetchCart = async () => {
+      setIsLoading(true)
+      await fetchCartUser({ user_id: 5 }).then((res) => {
+        if (res.status === 200) {
+          const { data } = res
+          const dataCart = data.carts[0]
+          setCarts(dataCart.products)
+          setCartId(dataCart.id)
+          setTotalCart(dataCart.totalProducts)
+        }
+
+        setIsLoading(false)
+      })
+    }
+
+    handleFetchCart()
+  }, [])
 
   return (
     <div>
@@ -84,15 +138,26 @@ const Navbar = () => {
           </div>
         </div>
         <div className="tw-col-span-2">
-          <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              Rogersovich
-            </MenuButton>
-            <MenuList>
-              <MenuItem>Profile</MenuItem>
-              {token && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
-            </MenuList>
-          </Menu>
+          <div className="fcr tw-gap-3">
+            <div>
+              <Menu>
+                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                  I am
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Profile</MenuItem>
+                  {token && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
+                </MenuList>
+              </Menu>
+            </div>
+            <MenuCart
+              totalCart={totalCart}
+              carts={carts}
+              cart_id={cartId}
+              isLoading={isLoading}
+              onUpdateCart={onUpdateCart}
+            />
+          </div>
         </div>
       </Box>
     </div>

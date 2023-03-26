@@ -8,9 +8,9 @@ import {
   useDisclosure,
   AlertDialogCloseButton,
 } from "@chakra-ui/react"
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, memo, useCallback } from "react"
 
-const ModalAlert = ({ toggleShow, triggerClose, title, children }) => {
+const ModalAlert = memo(({ toggleShow, triggerClose, title, children }) => {
   const checkChild = (el, type) => {
     if (typeof el.find((child) => child.props.name === type) !== "undefined") {
       const element = el.find((child) => {
@@ -42,19 +42,23 @@ const ModalAlert = ({ toggleShow, triggerClose, title, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = useRef()
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     onClose()
     triggerClose()
-  }
+  }, [onClose, triggerClose])
 
-  useEffect(() => {
+  const checkShow = useCallback(() => {
     if (toggleShow) {
       onOpen()
     } else {
       onClose()
     }
-  }, [toggleShow, onOpen, onClose])
+  }, [toggleShow, onClose, onOpen])
 
+  useEffect(() => {
+    checkShow()
+  }, [checkShow])
+  
   return (
     <>
       <AlertDialog
@@ -78,6 +82,6 @@ const ModalAlert = ({ toggleShow, triggerClose, title, children }) => {
       </AlertDialog>
     </>
   )
-}
+})
 
 export default ModalAlert
