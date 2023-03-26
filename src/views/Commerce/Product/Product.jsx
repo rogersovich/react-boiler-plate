@@ -1,7 +1,11 @@
-import { fetchProducts, fetchProduct } from "services/dummy-json/product"
+import {
+  fetchProducts,
+  fetchProduct,
+  searchProducts,
+} from "services/dummy-json/product"
 import { createCartUser } from "services/dummy-json/cart"
 import { useEffect, useState, useCallback } from "react"
-import { useToast } from "@chakra-ui/react"
+import { useToast, Input } from "@chakra-ui/react"
 import LoadingOverlay from "components/Widget/LoadingOverlay"
 import SkeletonImage from "components/Widget/SkeletonImage"
 import ProductList from "./components/ProductList"
@@ -12,6 +16,9 @@ const Product = () => {
 
   const [products, setProducts] = useState([])
   const [product, setProduct] = useState([])
+  const [productSearch, setProductSearch] = useState("")
+  const [querySearch, setQuerySearch] = useState("")
+  const [isSearch, setIsSearch] = useState("")
   const [isLoading, setIsLoading] = useState([])
   const [isLoadingDetail, setIsLoadingDetail] = useState(false)
   const [params, setparams] = useState({
@@ -79,6 +86,14 @@ const Product = () => {
     })
   }
 
+  const handleSearch = (e) => {
+    e.preventDefault()
+    setProductSearch(e.target.value)
+    setTimeout(() => {
+      setQuerySearch(e.target.value)
+    }, 1500)
+  }
+
   useEffect(() => {
     const handleFetchProduct = async () => {
       setIsLoading(true)
@@ -86,6 +101,7 @@ const Product = () => {
         limit: params.limit,
         skip: params.skip,
       }
+
       await fetchProducts(bodyParams).then((res) => {
         if (res.status === 200) {
           const { data } = res
@@ -103,8 +119,39 @@ const Product = () => {
       })
     }
 
-    handleFetchProduct()
-  }, [params.skip, params.limit])
+    const handleSearch = async () => {
+      setIsLoading(true)
+      const bodyParams = {
+        q: querySearch,
+      }
+      await searchProducts(bodyParams).then((res) => {
+        if (res.status === 200) {
+          const { data } = res
+          setProducts(data.products)
+          setparams((state) => ({
+            ...state,
+            count: data.total,
+          }))
+          setIsLoading(false)
+        } else {
+          setIsLoading(false)
+        }
+      })
+    }
+
+    if (querySearch !== "") {
+      setIsSearch(true)
+      setparams((state) => ({
+        ...state,
+        skip: 0,
+        page: 1,
+      }))
+      handleSearch()
+    } else {
+      setIsSearch(false)
+      handleFetchProduct()
+    }
+  }, [params.skip, params.limit, querySearch])
 
   return (
     <>
@@ -118,12 +165,23 @@ const Product = () => {
         />
       )}
       {!isLoading && products.length > 0 ? (
-        <ProductList
-          products={products}
-          onChangePagination={onChangePagination}
-          params={params}
-          onShowDetail={toggleDetail}
-        />
+        <div>
+          <div>
+            <Input
+              placeholder="Search By Name"
+              onChange={handleSearch}
+              value={productSearch}
+            />
+          </div>
+          <br />
+          <ProductList
+            products={products}
+            onChangePagination={onChangePagination}
+            params={params}
+            onShowDetail={toggleDetail}
+            isSearch={isSearch}
+          />
+        </div>
       ) : !isLoading && products.length === 0 ? (
         <div>Tidak ada data</div>
       ) : (

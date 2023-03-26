@@ -6,10 +6,12 @@ const ProductList = ({
   onChangePagination,
   params,
   onShowDetail,
+  isSearch,
 }) => {
   const showDetail = (ID) => {
     onShowDetail(ID)
   }
+
   return (
     <>
       <div>
@@ -92,16 +94,20 @@ const ProductList = ({
             </div>
           ))}
         </div>
-        <br />
-        <div className="tw-text-center">
-          <Pagination
-            className="pagination-bar"
-            currentPage={params.page}
-            totalCount={params.count}
-            pageSize={params.limit}
-            onPageChange={(page) => onChangePagination(page)}
-          />
-        </div>
+        {!isSearch && (
+          <div>
+            <br />
+            <div className="tw-text-center">
+              <Pagination
+                className="pagination-bar"
+                currentPage={params.page}
+                totalCount={params.count}
+                pageSize={params.limit}
+                onPageChange={(page) => onChangePagination(page)}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </>
   )
